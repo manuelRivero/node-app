@@ -1,0 +1,23 @@
+extends ../layout.pug
+
+
+block content
+    main
+        .row
+            if cart.product.length > 0
+                each product in cart.product
+                    .col.s12.m4
+                        .card
+                            .card-content
+                                p #{product.name}
+                                p #{product.qty}
+                            .card-action
+                                form(method='POST', action='/cart-delete-product' )
+                                    input(type="hidden", name="id" value=product.id)
+                                    input(type="hidden", name="price" value=product.price)
+
+                                    button.btn.waves-effect.waves-light(type="submit") Delete!
+
+
+            else 
+                h1 No products!

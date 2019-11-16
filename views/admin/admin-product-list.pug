@@ -1,0 +1,25 @@
+extends ../layout.pug
+
+
+block content
+    main
+        .row
+            if productData.length > 0
+                each product in productData
+                    .col.s12.m4
+                        .card
+                            .card-image
+                                img(src=product.imgUrl)
+                                span.card-title #{product.title}
+                            .card-content
+                                p #{product.description}
+                            .card-action
+                                a.waves-effect.waves-light.btn(href=`/edit-product/${product.id}?edit=true`) Edit
+                                form(action="/admin-delete" method="POST")
+                                    input(type="hidden", name="id" value=product.id)
+
+                                    button.waves-effect.waves-light.btn(type="submit") Delete
+
+            else 
+                h1 No products!
+        

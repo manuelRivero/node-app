@@ -1,0 +1,18 @@
+extends ../layout.pug
+
+block content 
+
+        .col.s12.m6.l4
+            h2.header #{product.title}
+            .card.horizontal
+                .card-image
+                     img(src=product.imgUrl)
+                .card-stacked
+                    .card-content
+                         p #{product.description}
+                    .card-action
+                        form(method='POST', action='/car-add-product' )
+                            input(type="hidden", name="id" value=product.id)
+                            button.btn.waves-effect.waves-light(type="submit") Add to car!
+
+

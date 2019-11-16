@@ -1,0 +1,52 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  meta(http-equiv='X-UA-Compatible' content='ie=edge')
+  title #{docTitle}
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css")
+  link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
+  link(rel="stylesheet", href="./css/main.css")
+  block styles
+
+body
+
+    nav.teal.darken-3
+        .nav-wrapper
+            a(href="#" class="brand-logo") Logo
+            a(href="#" data-target="mobile-demo" class="sidenav-trigger")
+                i.material-icons menu
+
+            ul.right.hide-on-med-and-down
+                li
+                    a(href='/', class=(path === '/' ? 'active' : '')) Shop
+                li
+                    a(href='/product-list', class=(path === '/product-list' ? 'active' : '')) Products
+                li
+                    a(href='/cart', class=(path === '/cart' ? 'active' : '')) Car
+                li
+                    a(href='/add-product', class=(path === '/add-product' ? 'active' : '')) Add Product
+                li
+                    a(href='/admin-product-list', class=(path === '/admin-product-list' ? 'active' : '')) Admin Products
+    
+    ul.sidenav(id="mobile-demo")
+        li
+            a(href="sass.html") Sass
+        li
+            a(href="badges.html") Components
+        li
+            a(href="collapsible.html") Javascript
+        li
+            a(href="mobile.html") Mobile
+
+    .container    
+        block content
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
+
+    script.
+          document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.sidenav');
+                var instances = M.Sidenav.init(elems);
+            });
+

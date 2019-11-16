@@ -1,0 +1,28 @@
+extends ../layout.pug
+
+block styles
+
+
+block content
+    main
+        .row
+            if productData.length > 0
+                each product in productData
+                    .col.s12.m3.l4
+                        .card
+                            .card-image
+                                img(src=product.imgUrl)
+                                span.card-title #{product.title}
+                            .card-content
+                                p #{product.description}
+                            .card-action
+                                a(href=`/product/${product.id}`) Details
+                                form(method='POST', action='/cart-add-product' )
+                                    input(type="hidden", name="id" value=product.id)
+
+                                    button.btn.waves-effect.waves-light(type="submit") Add to car!
+
+            else 
+                h1 No products!
+        
+        
