@@ -5,12 +5,12 @@ const sequelize = require('../util/database');
 const products = sequelize.define('products',{
     id:{
         type:Sequelize.INTEGER,
-        autoIntrement: true,
+        autoIncrement: true,
         allowNull: false,
         primaryKey:true
     },
     title:{
-        type:Sequelize.INTEGER,
+        type:Sequelize.STRING,
         allowNull: false,
     },
     price:{
