@@ -24,6 +24,15 @@ app.set('views', 'views')
 
 app.use(bodyParser.urlencoded({extended:false}))
 
+app.use( (req, res, next)=>{
+    User.findByPk(1)
+    .then( user =>{
+        req.user = user;
+        next();
+    })
+    .catch(err=> console.log(err))
+})
+
 app.use(adminRouter);
 app.use(shopRouter);
 
