@@ -3,21 +3,24 @@ extends ../layout.pug
 
 block content
     main
-        .row
-            if cart.product.length > 0
-                each product in cart.product
-                    .col.s12.m4
-                        .card
-                            .card-content
-                                p #{product.name}
-                                p #{product.qty}
-                            .card-action
-                                form(method='POST', action='/cart-delete-product' )
-                                    input(type="hidden", name="id" value=product.id)
-                                    input(type="hidden", name="price" value=product.price)
+        if cart.length > 0
+                .row
+                    each product in cart
+                        .col.s12.m4
+                            .card
+                                .card-content
+                                    p #{product.title}
+                                    p #{product.cartItem.quantity}
+                                .card-action
+                                    form(method='POST', action='/cart-delete-product' )
+                                        input(type="hidden", name="id" value=product.id)
+                                        input(type="hidden", name="price" value=product.price)
 
-                                    button.btn.waves-effect.waves-light(type="submit") Delete!
-
-
-            else 
-                h1 No products!
+                                        button.btn.waves-effect.waves-light(type="submit") Delete!
+                .row 
+                    form.col.s6.offset-s3(action="/create-order", method="POST")
+                        button.btn.waves-effect.waves-light(type="submit") Order!
+        else 
+            h1 No products!
+          
+        

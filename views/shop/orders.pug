@@ -1,0 +1,23 @@
+extends ../layout.pug
+
+
+block content
+    main
+        if orders.length > 0
+                .row
+                    each order in orders
+                        .col.s12.m4
+                            .card
+                                .card-content
+                                    each product in order.products 
+                                        p #{product.title}
+                                        p #{product.orderItem.quantity}
+                                .card-action
+                                
+
+                                        button.btn.waves-effect.waves-light(type="submit") Delete!
+ 
+        else 
+            h1 No Orders!
+          
+        

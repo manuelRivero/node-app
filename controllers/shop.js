@@ -23,27 +23,47 @@ exports.getProduct = (req, res, next)=>{
       }) 
      })
     
-}
+};
 
 exports.getCar = (req, res, next)=>{
-    Cart.fetchProducts((cart)=>{
-        res.render('shop/cart', {
-        docTitle:'Car',
-        path:'/car',
-        cart     
+    const {user} = req;
+    user.getCart().then( (cart)=>{
+        return cart.getProducts()
     })
+    .then( products =>{
+        console.log(products)
+        res.render('shop/cart', 
+        { docTitle:'Car',
+        path:'/car',
+        cart:products }
+        );    
     })
 
 };
 
 exports.addToCar = (req, res, next)=>{
     const productId = req.body.id;
-    Product.getById(productId, (product)=>{
-        if(product){
-            Cart.addProduct(product.id, product.price, product.title);
-        }
+    const {user} = req;
+    let fetchCart;
+    let finalQuantity = 1;
+
+    user.getCart().then( cart =>{
+        fetchCart=cart;
+        return cart.getProducts({where:{id: productId}});
     })
-    res.redirect('/cart')
+    .then( ([product]) =>{
+        
+        if(product){
+            finalQuantity = product.cartItem.quantity + 1;
+            return product;
+        }
+        return Product.findByPk(productId);
+    })
+    .then( finalProduct =>{
+        return fetchCart.addProduct(finalProduct, {through: {quantity: finalQuantity}})
+    })
+    .then( ()=> res.redirect("/cart"));
+    
 }
 
 exports.getIndex = (req, res, next)=>{
@@ -55,9 +75,58 @@ exports.getIndex = (req, res, next)=>{
         })
 };
 
+exports.createOrder = (req, res,  next)=>{
+    const {user}=req;
+    let fetechedCart, fetechedProducts;
+    user.getCart()
+    .then( cart =>  {
+        fetechedCart = cart;
+        return cart.getProducts()
+    })
+    .then( products => {
+        fetechedProducts = products
+        return user.createOrder()  
+    })
+    .then( order => {
+        order.addProducts( fetechedProducts.map(p =>{
+            p.orderItem= { quantity: p.cartItem.quantity};
+            return p;
+        }))
+    })
+    .then( result => {
+        fetechedCart.setProducts(null)
+    })
+    .then( result =>{
+        res.redirect('/orders')
+    })
+    .catch( err => console.log( err ))
+}
+
+exports.getOrders = ( req, res , next) =>{
+    const {user} = req;
+    user.getOrders({include:['products']})
+    .then( orders =>{
+        console.log(orders)
+        res.render('shop/orders',  {
+        docTitle:'Orders',
+        path:'/Orders',
+        orders })
+    })
+    .catch(err => console.log(err))
+}
 exports.deleteCartItem = (req, res, next)=>{
     const {id, price}= req.body;
-    Cart.deleteProduct(id, price, ()=>{
+    const {user} = req;
+
+    user.getCart()
+    .then( cart => {
+        return cart.getProducts({where:{id: id}})
+    })
+    .then( ([product]) => {
+        
+        return product.cartItem.destroy();
+    })
+    .then( result => {
         res.redirect("/cart")
     })
 }

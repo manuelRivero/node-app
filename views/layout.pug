@@ -25,19 +25,26 @@ body
                 li
                     a(href='/cart', class=(path === '/cart' ? 'active' : '')) Car
                 li
+                    a(href='/orders', class=(path === '/orders' ? 'active' : '')) Orders
+                li
                     a(href='/add-product', class=(path === '/add-product' ? 'active' : '')) Add Product
                 li
                     a(href='/admin-product-list', class=(path === '/admin-product-list' ? 'active' : '')) Admin Products
     
     ul.sidenav(id="mobile-demo")
-        li
-            a(href="sass.html") Sass
-        li
-            a(href="badges.html") Components
-        li
-            a(href="collapsible.html") Javascript
-        li
-            a(href="mobile.html") Mobile
+            li
+                    a(href='/', class=(path === '/' ? 'active' : '')) Shop
+            li
+                a(href='/product-list', class=(path === '/product-list' ? 'active' : '')) Products
+            li
+                a(href='/cart', class=(path === '/cart' ? 'active' : '')) Car
+            li
+                a(href='/admin-product-list', class=(path === '/orders' ? 'active' : '')) Orders
+            li
+                a(href='/add-product', class=(path === '/add-product' ? 'active' : '')) Add Product
+            li
+                a(href='/admin-product-list', class=(path === '/admin-product-list' ? 'active' : '')) Admin Products
+    
 
     .container    
         block content

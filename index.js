@@ -19,6 +19,8 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart')
 const CartItem = require('./models/cart-item');
+const Order = require('./models/order')
+const OrderItem = require('./models/order-item')
 
 app.set('view engine', 'pug');
 app.set('views', 'views')
@@ -45,15 +47,29 @@ app.use( notFound.notFound);
 //Sequelize Relationship inicialitation
 
 Product.belongsTo(User, {constraints:true, onDelete:"CASCADE"});
+
+// User
 User.hasMany(Product);
 User.hasOne(Cart);
+User.hasMany(Order)
+
+// Cart
 Cart.belongsTo(User);
 Cart.belongsToMany(Product, {through: CartItem});
+
+// Product
 Product.belongsToMany(Cart, {through: CartItem});
+Product.belongsToMany(Order, {through: OrderItem});
+
+// Order
+Order.belongsTo(User);
+Order.belongsToMany(Product, {through: OrderItem});
 
 
 
-sequelize.sync( {force:true})
+
+
+sequelize.sync()
 .then( res =>{
     return User.findByPk(1)
 })
@@ -63,14 +79,19 @@ sequelize.sync( {force:true})
             name:"manuel",
             email:"manuel.enrique.r.v@gmail.com"
         })
-
-        return user
     }
+    return user
 })
 .then( user =>{
-    console.log(user)
-    app.listen(5000)
+    user.getCart().then( car =>{
+        if(!car){
+            return user.createCart()
+        }
+        return;
+    })
+   
 })
+.then( res =>  app.listen(5000) )
 .catch( err => console.log(err))
 
 
