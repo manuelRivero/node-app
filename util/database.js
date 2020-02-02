@@ -5,9 +5,10 @@ const client = new MongoClient(uri, { useUnifiedTopology: true });
 let _db;
 let _error;
 
-const MongoConnect = ()=>{
+const MongoConnect = (callback)=>{
     client.connect().then(client => {
         _db=client.db();
+        callback();
     }).catch(err => {
         console.log(err);
         _error=err;
