@@ -13,7 +13,7 @@ const app = express();
 
 const notFound = require('./controllers/error');
 
-const {Connect} = require('./util/database')
+const {MongoConnect} = require('./util/database')
 
 
 
@@ -40,8 +40,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use( notFound.notFound);
 
-Connect( (client)=> {
-    app.listen(5000)
-    console.log(client)
-})
+MongoConnect( ()=> app.listen(5000))
 
