@@ -1,7 +1,11 @@
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://<username>:<password>@cluster0-lotux.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
 
+const Connect = callback =>{
+    client.connect(err => {
+  callback(client)
+});
+}
 
-const Sequelize = require('sequelize')
-
-const sequelize = new Sequelize('node-course','root','manuel12345', {dialect: 'mysql', host: 'localhost'});
-
-module.exports = sequelize;
+module.exports.Connect = Connect
