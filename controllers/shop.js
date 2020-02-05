@@ -1,9 +1,10 @@
 
 const Product = require('../models/product');
-const Cart = require('../models/cart');
+
 
 exports.getProducts = (req, res, next)=>{
-    Product.findAll().then( products =>{
+    Product.fetchAll().then( products =>{
+
         res.render('shop/product-list', {
             productData: products,
             docTitle:'Shop',
@@ -12,9 +13,8 @@ exports.getProducts = (req, res, next)=>{
 };
 
 exports.getProduct = (req, res, next)=>{
-    let productId = req.params.productId;
-    
-    Product.findByPk(productId).then( product =>{
+    const {productId} = req.params;
+    Product.findById(productId).then( product =>{
         console.log(product)
         res.render('shop/product-detail',{
          product:product,
@@ -24,6 +24,8 @@ exports.getProduct = (req, res, next)=>{
      })
     
 };
+
+/*
 
 exports.getCar = (req, res, next)=>{
     const {user} = req;
@@ -65,15 +67,19 @@ exports.addToCar = (req, res, next)=>{
     .then( ()=> res.redirect("/cart"));
     
 }
-
+*/
 exports.getIndex = (req, res, next)=>{
-    Product.findAll().then( products =>{
+    Product.fetchAll().then( products =>{
+        console.log(products)
         res.render('shop/product-list', {
             productData: products,
             docTitle:'Shop',
             path:'/product-list'})
         })
 };
+
+
+/*
 
 exports.createOrder = (req, res,  next)=>{
     const {user}=req;
@@ -130,3 +136,5 @@ exports.deleteCartItem = (req, res, next)=>{
         res.redirect("/cart")
     })
 }
+
+*/

@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const mongodb = require('mongodb')
 
 exports.getAddProducts = (req, res, next)=>{
 
@@ -16,7 +17,7 @@ exports.getEditProducts = (req, res, next) =>{
         return res.redirect('/');
     }
     let id = req.params.id;
-    Product.findByPk(id).then( product=>{
+    Product.findById(id).then( product=>{
         if(!product){
             return res.redirect('/')
         }
@@ -30,7 +31,7 @@ exports.getEditProducts = (req, res, next) =>{
 
 }
 exports.getAdminProducts = ( req, res, next) =>{
-    Product.findAll()
+    Product.fetchAll()
     .then(products =>{
         res.render('admin/admin-product-list', {
         productData:products,
@@ -45,14 +46,9 @@ exports.getAdminProducts = ( req, res, next) =>{
 
 exports.postEditProducts = (req, res, next) =>{
     let {id, title, price, imgUrl, description} = req.body;
-    Product.findByPk(id)
-    .then( product =>{
-        product.title=title;
-        product.price=price;
-        product.imgUrl=imgUrl;
-        product.description=description;
-        return product.save()
-    })
+    console.log(req.body)
+    const product = new Product(title,price,imgUrl,description, id)
+    product.save()
     .then( response =>{
         console.log("update susscesfull!");
         res.redirect(`/admin-product-list`)
@@ -62,16 +58,12 @@ exports.postEditProducts = (req, res, next) =>{
     
     
 }
+
+
 exports.postAddProducts = (req,res,next)=>{
     const {title, price, imgUrl, description} = req.body;
-    const {user}=req;
-    console.log(user)
-    user.createProduct({
-        title,
-        price,
-        imgUrl,
-        description
-    })
+    let product = new Product(title, price, imgUrl, description)
+    product.save()
     .then( result => {
         res.redirect('/admin-product-list');
     })
@@ -80,13 +72,12 @@ exports.postAddProducts = (req,res,next)=>{
 
 exports.postDeleteProduct = (req, res, next) =>{
     let id= req.body.id;
-    Product.findByPk(id)
-    .then(product=>{
-        return product.destroy()
-    })
+    console.log(req.body)
+    Product.destroy(id)
     .then( response=>{
         res.redirect('/admin-product-list');
     })
     .catch( err => console.log(err));
 }
+
 
