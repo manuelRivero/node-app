@@ -14,9 +14,9 @@ block content
                             .card-content
                                 p #{product.description}
                             .card-action
-                                a.waves-effect.waves-light.btn(href=`/edit-product/${product.id}?edit=true`) Edit
+                                a.waves-effect.waves-light.btn(href=`/edit-product/${product._id}?edit=true`) Edit
                                 form(action="/admin-delete" method="POST")
-                                    input(type="hidden", name="id" value=product.id)
+                                    input(type="hidden", name="id" value=product._id)
 
                                     button.waves-effect.waves-light.btn(type="submit") Delete
 

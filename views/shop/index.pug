@@ -20,10 +20,10 @@ block content
                                 img(src=product.imgUrl)
                                 span.card-title #{product.title}
                             .card-content
-                                p #{product.description}
+                                p 2
                             .card-action
                                 form(method='POST', action='/cart-add-product' )
-                                    input(type="hidden", name="id" value=product.id)
+                                    input(type="hidden", name="id" value=product._id)
                                     button.btn.waves-effect.waves-light(type="submit") Add to car!
 
             else 

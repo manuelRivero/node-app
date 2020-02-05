@@ -16,9 +16,9 @@ block content
                             .card-content
                                 p #{product.description}
                             .card-action
-                                a(href=`/product/${product.id}`) Details
+                                a(href=`/product/${product._id}`) Details
                                 form(method='POST', action='/cart-add-product' )
-                                    input(type="hidden", name="id" value=product.id)
+                                    input(type="hidden", name="id" value=product._id)
 
                                     button.btn.waves-effect.waves-light(type="submit") Add to car!
 
