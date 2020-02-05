@@ -1,6 +1,54 @@
-const Sequelize = require('sequelize');
+const {getDB} = require('./../util/database');
+const mongodb = require('mongodb');
 
-const sequelize = require('../util/database');
+class products {
+    constructor(title, price, imgUrl, description, id){
+        this.title=title;
+        this.price=price;
+        this.description=description;
+        this.imgUrl=imgUrl;
+        this._id= id ? new mongodb.ObjectId(id) : null;
+    }
+    save(){
+        console.log("save")
+        let dbOp;
+        let a;
+        let db=getDB();
+        if(this._id){
+            a=1
+            dbOp= db.collection('products').updateOne({_id: this._id}, {$set:this})
+        }else{
+            a=2
+            dbOp= db.collection('products').insertOne(this);
+        }
+        console.log(a)
+        return dbOp;
+    }
+
+    static fetchAll(){
+        let db=getDB();
+
+        return db
+        .collection('products')
+        .find()
+        .toArray()
+        .then( products => products)
+        .catch( err => console.log(err))
+    }
+
+    static findById(id){
+        let db=getDB();
+        return db.collection('products').find({_id: new mongodb.ObjectId(id)}).next();
+    }
+
+    static destroy(id){
+        console.log(id)
+        let db=getDB();
+        return db.collection('products').deleteOne({_id:new mongodb.ObjectId(id)})
+    }
+}
+
+/*
 
 const products = sequelize.define('products',{
     id:{
@@ -27,5 +75,7 @@ const products = sequelize.define('products',{
 
     }
 })
+
+*/
 
 module.exports = products;
