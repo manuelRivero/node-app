@@ -10,7 +10,7 @@ block content
                             .card
                                 .card-content
                                     p #{product.title}
-                                    p #{product.cartItem.quantity}
+                                    p #{product.quantity}
                                 .card-action
                                     form(method='POST', action='/cart-delete-product' )
                                         input(type="hidden", name="id" value=product.id)

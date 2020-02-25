@@ -25,15 +25,10 @@ exports.getProduct = (req, res, next)=>{
     
 };
 
-/*
-
 exports.getCar = (req, res, next)=>{
     const {user} = req;
-    user.getCart().then( (cart)=>{
-        return cart.getProducts()
-    })
+    user.getCart()
     .then( products =>{
-        console.log(products)
         res.render('shop/cart', 
         { docTitle:'Car',
         path:'/car',
@@ -46,28 +41,19 @@ exports.getCar = (req, res, next)=>{
 exports.addToCar = (req, res, next)=>{
     const productId = req.body.id;
     const {user} = req;
-    let fetchCart;
-    let finalQuantity = 1;
-
-    user.getCart().then( cart =>{
-        fetchCart=cart;
-        return cart.getProducts({where:{id: productId}});
+    console.log(user)
+    Product.findById(productId)
+    .then( product => {
+        return user.addToCart(product)
     })
-    .then( ([product]) =>{
-        
-        if(product){
-            finalQuantity = product.cartItem.quantity + 1;
-            return product;
-        }
-        return Product.findByPk(productId);
-    })
-    .then( finalProduct =>{
-        return fetchCart.addProduct(finalProduct, {through: {quantity: finalQuantity}})
-    })
-    .then( ()=> res.redirect("/cart"));
+    .then( ()=> {
+        res.redirect('/cart')
+    } )
+    .catch( err => console.log(err));
+    
     
 }
-*/
+
 exports.getIndex = (req, res, next)=>{
     Product.fetchAll().then( products =>{
         console.log(products)
