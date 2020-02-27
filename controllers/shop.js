@@ -65,6 +65,17 @@ exports.getIndex = (req, res, next)=>{
 };
 
 
+exports.deleteCartItem = (req, res, next)=>{
+    const {id, price}= req.body;
+    const {user} = req;
+
+    user.deleteFromCart(id)
+    .then( result => {
+        res.redirect("/cart")
+    }).catch( err => console.log(err))
+}
+
+
 /*
 
 exports.createOrder = (req, res,  next)=>{
@@ -105,22 +116,6 @@ exports.getOrders = ( req, res , next) =>{
         orders })
     })
     .catch(err => console.log(err))
-}
-exports.deleteCartItem = (req, res, next)=>{
-    const {id, price}= req.body;
-    const {user} = req;
-
-    user.getCart()
-    .then( cart => {
-        return cart.getProducts({where:{id: id}})
-    })
-    .then( ([product]) => {
-        
-        return product.cartItem.destroy();
-    })
-    .then( result => {
-        res.redirect("/cart")
-    })
 }
 
 */

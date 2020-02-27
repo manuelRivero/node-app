@@ -38,17 +38,16 @@ class User {
 
         const updateCart = {items:cartItems}
         let db = getDB();
-        return db.collection('user').updateOne({_id: ObjectId(this._id)}, {$set:{cart:updateCart}})
+        return db.collection('user').updateOne({_id: new ObjectId(this._id)}, {$set:{cart:updateCart}})
     }
 
     getCart(){
         let db=getDB();
         let productIndexArray = this.cart.items.map( p => p._id);
-        console.log(productIndexArray)
+        
         return db.collection('products').find({_id: {$in: productIndexArray} })
         .toArray()
         .then( products => {
-            console.log(products)
             return products.map( p => {
                 
                 let quantity = this.cart.items.find( i => i._id.toString() === p._id.toString()).quantity;
@@ -57,6 +56,15 @@ class User {
             } )
         });
 
+
+
+    }
+
+    deleteFromCart(productId){
+        let updateCart = this.cart.items.filter( p => p._id.toString() !== productId.toString());
+        let db=getDB()
+        
+        return db.collection('user').updateOne({_id: new ObjectId(this._id)}, {$set:{cart:{items:updateCart}}})
 
 
     }

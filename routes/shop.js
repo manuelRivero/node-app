@@ -19,8 +19,7 @@ shopRouter.get('/product/:productId', shopController.getProduct)
 //shopRouter.post('/create-order', shopController.createOrder);
 
 shopRouter.post('/cart-add-product', shopController.addToCar)
-
-//shopRouter.post('/cart-delete-product', shopController.deleteCartItem)
+shopRouter.post('/cart-delete-product', shopController.deleteCartItem)
 
 
 module.exports = shopRouter;

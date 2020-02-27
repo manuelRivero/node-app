@@ -28,10 +28,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use( (req, res, next)=>{
     User.findById('5e40a04b702bf81eec17ebbc')
     .then( user =>{
-        req.user = new User(user.name, user.email, user._id, user.cart);
+        req.user = new User(user.name, user.email, user._id, user.cart );
+        
         next();
     })
-    .catch( err => console.log(err))
+    .catch( err => {
+        console.log("erro");
+        console.log(err)
+    })
 })
 
 app.use(adminRouter);
