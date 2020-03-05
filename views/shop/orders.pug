@@ -9,9 +9,9 @@ block content
                         .col.s12.m4
                             .card
                                 .card-content
-                                    each product in order.products 
-                                        p #{product.title}
-                                        p #{product.orderItem.quantity}
+                                    each product in order.items
+                                        p #{product._id}
+                                        p #{product.quantity}
                                 .card-action
                                 
 

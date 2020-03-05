@@ -68,6 +68,25 @@ class User {
 
 
     }
+
+    addOrder(){
+        let db=getDB()
+        const orderInfo = {
+            user:{
+                _id: new ObjectId(this._id),
+                name: this.name},
+            items:this.cart.items
+        }
+        return db.collection('orders').insertOne(orderInfo)
+        .then(result =>{
+            this.cart.items=[]
+            return db.collection('user').updateOne({_id: new ObjectId(this._id)}, {$set:{cart:this.cart}})
+        })
+    }
+    getOrders(){
+        let db=getDB();
+        return db.collection('orders').find({'user._id': new ObjectId(this._id)}).toArray()
+    }
 }
 
 module.exports = User;

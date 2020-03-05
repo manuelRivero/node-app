@@ -76,29 +76,9 @@ exports.deleteCartItem = (req, res, next)=>{
 }
 
 
-/*
-
 exports.createOrder = (req, res,  next)=>{
     const {user}=req;
-    let fetechedCart, fetechedProducts;
-    user.getCart()
-    .then( cart =>  {
-        fetechedCart = cart;
-        return cart.getProducts()
-    })
-    .then( products => {
-        fetechedProducts = products
-        return user.createOrder()  
-    })
-    .then( order => {
-        order.addProducts( fetechedProducts.map(p =>{
-            p.orderItem= { quantity: p.cartItem.quantity};
-            return p;
-        }))
-    })
-    .then( result => {
-        fetechedCart.setProducts(null)
-    })
+    user.addOrder()
     .then( result =>{
         res.redirect('/orders')
     })
@@ -107,7 +87,7 @@ exports.createOrder = (req, res,  next)=>{
 
 exports.getOrders = ( req, res , next) =>{
     const {user} = req;
-    user.getOrders({include:['products']})
+    user.getOrders(user._id)
     .then( orders =>{
         console.log(orders)
         res.render('shop/orders',  {
@@ -117,5 +97,3 @@ exports.getOrders = ( req, res , next) =>{
     })
     .catch(err => console.log(err))
 }
-
-*/
