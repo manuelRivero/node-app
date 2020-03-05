@@ -1,6 +1,8 @@
 
 const express = require('express');
 
+const mongoose = require('mongoose')
+
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -42,7 +44,8 @@ app.use(adminRouter);
 app.use(shopRouter);
 app.use( notFound.notFound);
 
-
-
-MongoConnect( ()=> app.listen(5000))
+mongoose.connect("mongodb+srv://admin:6WwKnjPbMwXG7LGj@cluster0-lotux.mongodb.net/shop?retryWrites=true&w=majority")
+.then( res => {
+    app.listen(5000)
+}).catch( err => console.log(err))
 
